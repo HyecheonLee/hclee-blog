@@ -4,6 +4,6 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController("/api/blog")
-class Blog {
+class BlogController {
 	fun index() = LocalDateTime.now()
 }
