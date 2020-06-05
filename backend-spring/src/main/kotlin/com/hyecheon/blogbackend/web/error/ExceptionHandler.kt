@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest
 @RestControllerAdvice
 class ExceptionHandler {
 
-	@ExceptionHandler(MethodArgumentNotValidException::class)
+	@ExceptionHandler(MethodArgumentNotValidException::class, IllegalArgumentException::class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	fun handleValidationException(e: MethodArgumentNotValidException, request: HttpServletRequest): ApiError? {
 		val validationErrors =
