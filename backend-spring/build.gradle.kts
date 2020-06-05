@@ -23,7 +23,7 @@ dependencies {
 	}
 	implementation("org.springframework.boot:spring-boot-starter-undertow")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-
+	implementation("com.auth0:java-jwt:2.1.0")
 	// map-struct
 	// map-struct Annotation Processor
 	implementation("org.mapstruct:mapstruct:1.3.1.Final")
