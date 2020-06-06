@@ -2,7 +2,7 @@ package com.hyecheon.blogbackend.service
 
 import com.hyecheon.blogbackend.model.User
 import com.hyecheon.blogbackend.repository.UserRepository
-import com.hyecheon.blogbackend.security.JWT
+import com.hyecheon.blogbackend.security.jwt.JWT
 import com.hyecheon.blogbackend.utils.CLIENT_HOST
 import com.hyecheon.blogbackend.utils.encryptPassword
 import com.hyecheon.blogbackend.utils.shortUUID
@@ -36,6 +36,7 @@ class UserService(
 		if (!loggedUser.checkPassword(password)) {
 			throw IllegalArgumentException("Bad credential")
 		}
+		loggedUser.afterLoginSuccess()
 		return UserReqWithTokenDto(loggedUser.generateToken(jwt),
 				UserReqDto(loggedUser.username, loggedUser.name, loggedUser.email, loggedUser.role))
 	}

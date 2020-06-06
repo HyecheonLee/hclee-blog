@@ -1,17 +1,17 @@
 package com.hyecheon.blogbackend.model
 
-import com.hyecheon.blogbackend.security.JWT
+import com.hyecheon.blogbackend.security.jwt.JWT
 import com.hyecheon.blogbackend.utils.encryptPassword
-import org.springframework.data.annotation.Transient
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.MongoId
+import org.springframework.security.core.authority.AuthorityUtils
 import java.time.LocalDateTime
 
 @Document(collection = "users")
 data class User(
 		@MongoId
-		var id: String = "",
+		var id: String? = null,
 		var username: String = "",
 		@Indexed(unique = true)
 		var name: String = "",
@@ -20,16 +20,12 @@ data class User(
 		var profile: String = "",
 		var hashedPassword: String = "",
 		var salt: String = "",
-		var role: Int = -1,
+		var role: String = "ROLE_USER",
 		var photo: String = "",
-		var resetPasswordLink: String = ""
+		var resetPasswordLink: String = "",
+		var loginCount: Long = 0,
+		var loginTime: LocalDateTime = LocalDateTime.now()
 ) {
-
-
-	var loginCount: Long = 0
-
-	@Transient
-	var loginTime: LocalDateTime = LocalDateTime.now()
 
 	fun afterLoginSuccess(): Long {
 		this.loginTime = LocalDateTime.now()
@@ -37,7 +33,7 @@ data class User(
 	}
 
 	fun generateToken(jwt: JWT) = let {
-		jwt.generateToken(mutableMapOf("userame" to username, "email" to email, "roles" to role))
+		jwt.generateToken(mutableMapOf("username" to username, "email" to email, "roles" to AuthorityUtils.createAuthorityList(role)))
 	}
 
 	fun checkPassword(password: String) = let {

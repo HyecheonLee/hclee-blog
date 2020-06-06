@@ -1,5 +1,7 @@
 package com.hyecheon.blogbackend.utils
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.nio.ByteBuffer
 import java.util.*
 import javax.crypto.Mac
@@ -18,4 +20,8 @@ fun shortUUID(): String {
 	val uuid = UUID.randomUUID()
 	val l = ByteBuffer.wrap(uuid.toString().toByteArray()).long
 	return l.toString(Character.MAX_RADIX)
+}
+
+interface Log {
+	val log: Logger get() = LoggerFactory.getLogger(this.javaClass)
 }

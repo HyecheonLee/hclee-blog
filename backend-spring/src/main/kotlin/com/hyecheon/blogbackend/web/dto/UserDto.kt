@@ -29,7 +29,7 @@ data class UserReqDto(
 		var username: String,
 		var name: String,
 		var email: String,
-		var role: Int
+		var role: String
 )
 
 data class UserSignUpResDto(

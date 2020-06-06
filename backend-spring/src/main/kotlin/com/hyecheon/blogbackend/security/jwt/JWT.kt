@@ -1,4 +1,4 @@
-package com.hyecheon.blogbackend.security
+package com.hyecheon.blogbackend.security.jwt
 
 import com.auth0.jwt.Algorithm
 import com.auth0.jwt.JWTSigner
