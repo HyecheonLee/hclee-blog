@@ -1,11 +1,19 @@
 import Layout from "../componentes/Layout";
+import React from "react";
+import Link from "next/link";
 
 const Index = () => {
   return (
       <Layout>
         <h2>Index</h2>
-      </Layout>)
-
+        <Link href="/signup">
+          <a>Signup</a>
+        </Link>
+        <Link href="/signin">
+          <a>Signin</a>
+        </Link>
+      </Layout>
+  )
 }
 
 export default Index
