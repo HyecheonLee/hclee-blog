@@ -36,6 +36,6 @@ class UserAuthenticationToken : AbstractAuthenticationToken {
 
 	override fun eraseCredentials() {
 		super.eraseCredentials()
-		credentials = ""
+		credentials = null
 	}
 }

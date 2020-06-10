@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 
-class JwtAuthenticationTokenFilter() : GenericFilterBean() {
+class JwtAuthenticationTokenFilter : GenericFilterBean() {
 	companion object : Log
 
 	@Value("\${jwt.token.header}")
