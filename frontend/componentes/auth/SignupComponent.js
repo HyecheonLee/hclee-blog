@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import {signup} from "../../actions/auth"
+import React, {useEffect, useState} from 'react';
+import {isAuth, signup} from "../../actions/auth"
+import Router from "next/router";
 
 const SignupComponent = () => {
   const [values, setValues] = useState({
@@ -12,6 +13,11 @@ const SignupComponent = () => {
     showForm: true
   });
   const {name, email, password, error, loading, message, showForm} = values;
+
+  useEffect(() => {
+    isAuth() && Router.push(`/`)
+  }, [message]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.table({name, email, password, error, loading, message, showForm});
@@ -36,7 +42,6 @@ const SignupComponent = () => {
         });
       }
     });
-
   }
   const handleChange = name => (e) => {
     setValues({

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {signin} from "../../actions/auth"
+import React, {useEffect, useState} from 'react';
+import {authenticate, isAuth, signin} from "../../actions/auth"
 import Router from "next/router";
 
 const SigninComponent = () => {
@@ -24,14 +24,17 @@ const SigninComponent = () => {
       if (data.error) {
         setValues({...values, error: data.error, loading: false})
       } else {
-        //save user token to cookie
-        //save user info to localstorage
-        //authenticate user
-        Router.push(`/`)
+        authenticate(data, () => {
+          Router.push(`/`)
+        });
       }
     });
 
   }
+  useEffect(() => {
+    isAuth() && Router.push(`/`)
+  }, [message]);
+
   const handleChange = name => (e) => {
     setValues({
       ...values,
