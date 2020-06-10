@@ -1,20 +1,21 @@
 package com.hyecheon.blogbackend.security
 
+import com.hyecheon.blogbackend.security.jwt.JwtAuthentication
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
 
 
 class UserAuthenticationToken : AbstractAuthenticationToken {
-	private val principal: Any
+	private val principal: JwtAuthentication
 	private var credentials: String?
 
-	constructor(principal: Any, credentials: String) : super(null) {
+	constructor(principal: JwtAuthentication, credentials: String) : super(null) {
 		super.setAuthenticated(false)
 		this.principal = principal
 		this.credentials = credentials
 	}
 
-	constructor(principal: Any, credentials: String = "", authorities: Collection<GrantedAuthority>) : super(authorities) {
+	constructor(principal: JwtAuthentication, credentials: String = "", authorities: Collection<GrantedAuthority>) : super(authorities) {
 		super.setAuthenticated(true)
 		this.principal = principal
 		this.credentials = credentials
@@ -24,7 +25,7 @@ class UserAuthenticationToken : AbstractAuthenticationToken {
 		return credentials
 	}
 
-	override fun getPrincipal(): Any {
+	override fun getPrincipal(): JwtAuthentication {
 		return principal
 	}
 

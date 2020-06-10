@@ -4,15 +4,17 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import java.lang.RuntimeException
 import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
 class ExceptionHandler {
 
-	@ExceptionHandler(MethodArgumentNotValidException::class, IllegalArgumentException::class)
+	@ExceptionHandler(MethodArgumentNotValidException::class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	fun handleValidationException(e: MethodArgumentNotValidException, request: HttpServletRequest): ApiError? {
+	fun handleValidationException(e: MethodArgumentNotValidException, request: HttpServletRequest): ApiError {
 		val validationErrors =
 				e.bindingResult.fieldErrors
 						.fold(mutableMapOf<String, String>()) { acc, fieldError ->
@@ -21,6 +23,12 @@ class ExceptionHandler {
 							}
 							acc
 						}
-		return ApiError(status = 400, message = "Validation error", url = request.servletPath, validationErrors = validationErrors)
+		return ApiValidationErrors(status = 400, message = "Validation error", url = request.servletPath, validationErrors = validationErrors)
+	}
+
+	@ExceptionHandler(RuntimeException::class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	fun handleRuntimeException(e: RuntimeException, request: HttpServletRequest): ApiError {
+		return ApiRuntimeErrors(status = 400, message = e.message ?: "", url = request.servletPath)
 	}
 }

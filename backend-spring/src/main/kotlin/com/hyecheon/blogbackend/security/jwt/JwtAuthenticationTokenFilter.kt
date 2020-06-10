@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.web.filter.GenericFilterBean
 import java.io.UnsupportedEncodingException
+import java.lang.RuntimeException
 import java.net.URLDecoder
 import java.util.regex.Pattern
 import javax.servlet.FilterChain
@@ -48,10 +49,10 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 				}
 
 				val authorities = obtainAuthorities(claims)
-				if (claims.containsKey("username") && claims.containsKey("email") && authorities != null && authorities.isNotEmpty()) {
-					val username = claims["username"] as String
+				if (claims.containsKey("id") && claims.containsKey("email") && authorities != null && authorities.isNotEmpty()) {
+					val id = claims["id"] as String
 					val email = claims["email"] as String
-					val authentication = UserAuthenticationToken(JwtAuthentication(username, email), authorities = authorities)
+					val authentication = UserAuthenticationToken(JwtAuthentication(id, email), authorities = authorities)
 					authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 					SecurityContextHolder.getContext().authentication = authentication
 				}

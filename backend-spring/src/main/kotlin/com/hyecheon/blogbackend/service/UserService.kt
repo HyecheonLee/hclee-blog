@@ -6,8 +6,6 @@ import com.hyecheon.blogbackend.security.jwt.JWT
 import com.hyecheon.blogbackend.utils.CLIENT_HOST
 import com.hyecheon.blogbackend.utils.encryptPassword
 import com.hyecheon.blogbackend.utils.shortUUID
-import com.hyecheon.blogbackend.web.dto.UserReqDto
-import com.hyecheon.blogbackend.web.dto.UserReqWithTokenDto
 import org.springframework.stereotype.Service
 import java.util.*
 import kotlin.math.roundToInt
@@ -31,13 +29,16 @@ class UserService(
 		return userRepository.save(user)
 	}
 
-	fun login(email: String, password: String): UserReqWithTokenDto {
+	fun login(email: String, password: String): User {
 		val loggedUser = userRepository.findByEmail(email).orElseThrow { throw IllegalArgumentException("User with that email does not exist. Pleas signup.") }
 		if (!loggedUser.checkPassword(password)) {
 			throw IllegalArgumentException("Bad credential")
 		}
 		loggedUser.afterLoginSuccess()
-		return UserReqWithTokenDto(loggedUser.generateToken(jwt),
-				UserReqDto(loggedUser.username, loggedUser.name, loggedUser.email, loggedUser.role))
+		return loggedUser
+	}
+
+	fun findByEmail(email: String): User {
+		return userRepository.findByEmail(email).orElseThrow { IllegalArgumentException("Id 가 잘못 됐습니다.") }
 	}
 }

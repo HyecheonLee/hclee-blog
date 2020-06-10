@@ -11,3 +11,10 @@ jwt:
     clientId: hclee
     clientSecret: hclee
     expirySeconds: 86400
+
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true

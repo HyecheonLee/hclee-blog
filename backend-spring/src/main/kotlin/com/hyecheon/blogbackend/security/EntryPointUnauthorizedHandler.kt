@@ -1,7 +1,7 @@
 package com.hyecheon.blogbackend.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.hyecheon.blogbackend.web.error.ApiError
+import com.hyecheon.blogbackend.web.error.ApiRuntimeErrors
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class EntryPointUnauthorizedHandler : AuthenticationEntryPoint {
 	companion object {
-		var E401 = ApiError(status = HttpStatus.UNAUTHORIZED.value(), message = "Access denied")
+		var E401 = ApiRuntimeErrors(status = HttpStatus.UNAUTHORIZED.value(), message = "Access denied")
 	}
 
 	private val om = ObjectMapper()
