@@ -25,7 +25,11 @@ const SigninComponent = () => {
         setValues({...values, error: data.error, loading: false})
       } else {
         authenticate(data, () => {
-          Router.push(`/`)
+          if (isAuth() && isAuth().role === "ROLE_ADMIN") {
+            Router.push(`/admin`)
+          } else {
+            Router.push(`/user`)
+          }
         });
       }
     });
@@ -41,7 +45,6 @@ const SigninComponent = () => {
       error: false,
       [name]: e.target.value
     })
-    console.log(name, e.target.value)
   }
   const showLoading = () => loading ?
       <div className="alert alert-info">Loading...</div> : ""

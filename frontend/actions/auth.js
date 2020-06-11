@@ -29,7 +29,7 @@ export const signin = (user) => {
   .then(response => {
     return response.json()
   })
-  .catch(err => console.log(err))
+  .catch(err => console.table(err.response))
 }
 export const signout = (next) => {
   removeCookie('token')
@@ -88,8 +88,10 @@ export const authenticate = (data, next) => {
 
 export const isAuth = () => {
   if (process.browser) {
-    return getCookie('token') &&
-        localStorage.getItem('user') &&
-        JSON.parse(localStorage.getItem('user'));
+    if (getCookie('token') && localStorage.getItem('user') !== 'undefined') {
+      return JSON.parse(localStorage.getItem('user'));
+    } else {
+      return false;
+    }
   }
 }
