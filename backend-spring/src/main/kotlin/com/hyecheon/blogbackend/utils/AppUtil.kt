@@ -7,6 +7,7 @@ import java.util.*
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
+
 const val CLIENT_HOST = "http://localhost:3000"
 
 fun encryptPassword(data: String, key: String): String {

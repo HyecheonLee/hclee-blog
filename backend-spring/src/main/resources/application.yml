@@ -11,6 +11,7 @@ jwt:
     clientId: hclee
     clientSecret: hclee
     expirySeconds: 86400
+    refreshTime: 600
 
 server:
   servlet:

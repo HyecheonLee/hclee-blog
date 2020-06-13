@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import java.time.LocalDateTime
 
@@ -39,5 +40,5 @@ data class User(
 
 	fun checkPassword(password: String) = let { encryptPassword(password, salt) == hashedPassword }
 
-	fun getAuthorities() = let { AuthorityUtils.createAuthorityList(role) }
+	fun getAuthorities(): MutableList<GrantedAuthority> = let { AuthorityUtils.createAuthorityList(role) }
 }

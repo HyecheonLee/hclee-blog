@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController
 class UserController(
 		val userService: UserService,
 		val userMapper: UserMapper) {
+
+
 	@GetMapping("/api/profile")
 	fun getProfile() = let {
 		val userAuthenticationToken = SecurityContextHolder.getContext().authentication as UserAuthenticationToken

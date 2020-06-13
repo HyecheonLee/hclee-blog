@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.web.filter.GenericFilterBean
 import java.io.UnsupportedEncodingException
-import java.lang.RuntimeException
 import java.net.URLDecoder
 import java.util.regex.Pattern
 import javax.servlet.FilterChain
@@ -26,6 +25,9 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 
 	@Value("\${jwt.token.header}")
 	private lateinit var tokenHeader: String
+
+	@Value("\${jwt.token.refreshTime}")
+	private var refreshTime: Int = 600
 
 	@Autowired
 	private lateinit var jwt: JWT
@@ -43,7 +45,7 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 					log.debug("JWT parse result: {}", claims)
 				}
 				/*만료 10분 전*/
-				if (canRefresh(claims, 60 * 10)) {
+				if (canRefresh(claims, refreshTime)) {
 					val newAuthorizationToken = jwt.refreshToken(authorizationToken)
 					response.setHeader("api_key", newAuthorizationToken)
 				}
@@ -86,9 +88,9 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 		}
 	}
 
-	fun obtainAuthorizationToken(request: HttpServletRequest): String? {
+	private fun obtainAuthorizationToken(request: HttpServletRequest): String? {
 		var token = request.getHeader(tokenHeader)
-		if (token != null) {
+		if (!token.isNullOrEmpty()) {
 			if (log.isDebugEnabled) log.debug("Jwt authorization request detected: {}", token)
 			try {
 				token = URLDecoder.decode(token, CharEncoding.UTF_8)
@@ -105,7 +107,6 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 		return null
 	}
 
-	fun verify(token: String) = let {
-		jwt.verify(token)
-	}
+
+	private fun verify(token: String) = let { jwt.verify(token) }
 }

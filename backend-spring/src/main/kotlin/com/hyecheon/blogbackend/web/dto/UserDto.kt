@@ -1,7 +1,5 @@
 package com.hyecheon.blogbackend.web.dto
 
-import org.springframework.data.mongodb.core.index.Indexed
-import org.springframework.data.mongodb.core.mapping.Field
 import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.Min
