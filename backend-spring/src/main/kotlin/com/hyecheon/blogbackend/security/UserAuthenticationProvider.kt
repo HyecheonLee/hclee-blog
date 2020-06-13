@@ -18,7 +18,7 @@ class UserAuthenticationProvider(
 		val principal = authentication.principal as String
 		val credentials = authentication.credentials as String
 		val user = userService.login(principal, credentials)
-		return UserAuthenticationToken(principal = JwtAuthentication(user.id!!, user.email), authorities = user.getAuthorities())
+		return UserAuthenticationToken(principal = JwtAuthentication(user.email), authorities = user.getAuthorities())
 	}
 
 	override fun supports(authentication: Class<*>): Boolean {

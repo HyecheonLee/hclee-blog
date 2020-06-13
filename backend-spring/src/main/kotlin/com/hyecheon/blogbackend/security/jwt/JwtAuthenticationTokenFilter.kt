@@ -6,6 +6,7 @@ import com.hyecheon.blogbackend.utils.Log
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -51,10 +52,15 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 				}
 
 				val authorities = obtainAuthorities(claims)
-				if (claims.containsKey("id") && claims.containsKey("email") && authorities != null && authorities.isNotEmpty()) {
-					val id = claims["id"] as String
+				if (claims.containsKey("email") && authorities != null && authorities.isNotEmpty()) {
 					val email = claims["email"] as String
-					val authentication = UserAuthenticationToken(JwtAuthentication(id, email), authorities = authorities)
+					val error = claims["error"] ?: ""
+
+					val jwtAuthentication = JwtAuthentication(email, error as String, addr = request.remoteAddr)
+					if (jwtAuthentication.isError()) {
+						log.error("jwt error [{}]", jwtAuthentication)
+					}
+					val authentication = UserAuthenticationToken(jwtAuthentication, authorities = authorities)
 					authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
 					SecurityContextHolder.getContext().authentication = authentication
 				}
@@ -98,15 +104,29 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 				if (parts.size == 2) {
 					val scheme = parts[0]
 					val credentials = parts[1]
-					return if (BEARER.matcher(scheme).matches()) credentials else null
+					return if (BEARER.matcher(scheme).matches()) credentials else
+						jwt.generateToken(
+								mutableMapOf("email" to "ANONYMOUS@ANONYMOUS.com",
+										"error" to "credentials error [$credentials]",
+										"roles" to AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")))
 				}
 			} catch (e: UnsupportedEncodingException) {
 				log.error(e.message, e)
 			}
 		}
-		return null
+		return jwt.generateToken(
+				mutableMapOf("email" to "ANONYMOUS@ANONYMOUS.com", "roles" to AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS")))
 	}
 
 
-	private fun verify(token: String) = let { jwt.verify(token) }
+	private fun verify(token: String) = let {
+		try {
+			jwt.verify(token)
+		} catch (e: Exception) {
+			jwt.verify(
+					jwt.generateToken(mutableMapOf("email" to "ANONYMOUS@ANONYMOUS.com",
+							"error" to "verify error [$token]",
+							"roles" to AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"))))
+		}
+	}
 }

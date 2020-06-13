@@ -9,12 +9,6 @@ class UserAuthenticationToken : AbstractAuthenticationToken {
 	private val principal: JwtAuthentication
 	private var credentials: String?
 
-	constructor(principal: JwtAuthentication, credentials: String) : super(null) {
-		super.setAuthenticated(false)
-		this.principal = principal
-		this.credentials = credentials
-	}
-
 	constructor(principal: JwtAuthentication, credentials: String = "", authorities: Collection<GrantedAuthority>) : super(authorities) {
 		super.setAuthenticated(true)
 		this.principal = principal

@@ -35,7 +35,7 @@ data class User(
 	}
 
 	fun generateToken(jwt: JWT) = let {
-		jwt.generateToken(mutableMapOf("id" to id!!, "email" to email, "roles" to AuthorityUtils.createAuthorityList(role)))
+		jwt.generateToken(mutableMapOf("email" to email, "roles" to AuthorityUtils.createAuthorityList(role)))
 	}
 
 	fun checkPassword(password: String) = let { encryptPassword(password, salt) == hashedPassword }
