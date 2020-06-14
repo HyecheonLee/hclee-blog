@@ -23,12 +23,12 @@ class ExceptionHandler {
 							}
 							acc
 						}
-		return ApiValidationErrors(status = 400, message = "Validation error", url = request.servletPath, validationErrors = validationErrors)
+		return ApiValidationErrors(status = 400, error = "Validation error", url = request.servletPath, validationErrors = validationErrors)
 	}
 
 	@ExceptionHandler(Exception::class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	fun handleException(e: RuntimeException, request: HttpServletRequest): ApiError {
-		return ApiRuntimeErrors(status = 400, message = e.message ?: "", url = request.servletPath)
+		return ApiRuntimeErrors(status = 400, error = e.message ?: "", url = request.servletPath)
 	}
 }

@@ -4,7 +4,6 @@ import com.hyecheon.blogbackend.model.CategoryMapper
 import com.hyecheon.blogbackend.service.CategoryService
 import com.hyecheon.blogbackend.web.dto.CategoryReqDto
 import org.springframework.security.access.annotation.Secured
-import org.springframework.security.config.web.servlet.SecurityMarker
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -12,7 +11,7 @@ class CategoryController(
 		val categoryMapper: CategoryMapper,
 		val categoryService: CategoryService) {
 
-	@Secured(value = ["ADMIN"])
+	@Secured(value = ["ROLE_ADMIN"])
 	@PostMapping("/api/category")
 	fun create(@RequestBody categoryReqDto: CategoryReqDto) = let {
 		val category = categoryMapper.toModel(categoryReqDto)
@@ -20,13 +19,15 @@ class CategoryController(
 	}
 
 	@GetMapping("/api/categories")
-	fun list() = let { categoryService.list() }
+	fun list() = let {
+		categoryService.list()
+	}
 
 
 	@GetMapping("/api/category/{slug}")
 	fun findBySlug(@PathVariable slug: String) = let { categoryService.findBySlug(slug) }
 
-	@Secured(value = ["ADMIN"])
+	@Secured(value = ["ROLE_ADMIN"])
 	@DeleteMapping("/api/category/{slug}")
 	fun deleteBySlug(@PathVariable slug: String) = let {
 		categoryService.deleteBySlug(slug)

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse
 @Component
 class EntryPointUnauthorizedHandler : AuthenticationEntryPoint {
 	companion object {
-		var E401 = ApiRuntimeErrors(status = HttpStatus.UNAUTHORIZED.value(), message = "Access denied")
+		var E401 = ApiRuntimeErrors(status = HttpStatus.UNAUTHORIZED.value(), error = "Access denied")
 	}
 
 	private val om = ObjectMapper()

@@ -17,7 +17,7 @@ class ErrorHandler(
 		val message = attributes["message"] ?: ""
 		val url = attributes["path"] ?: ""
 		val status = attributes["status"] ?: 400
-		return ApiRuntimeErrors(status = status as Int, message = message as String, url = url as String)
+		return ApiRuntimeErrors(status = status as Int, error = message as String, url = url as String)
 	}
 
 	override fun getErrorPath() = "/error"
