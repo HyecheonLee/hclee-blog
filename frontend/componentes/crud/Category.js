@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import Link from 'next/link'
-import Router from 'next/router'
-import {isAuth, getCookie} from "../../actions/auth";
+import React, {useEffect, useState} from 'react';
+import {getCookie} from "../../actions/auth";
 import {
   createCategory,
   getCategories,
@@ -36,9 +34,11 @@ const Category = () => {
 
   const showCategories = () => {
     return categories.map((category, index) => {
-      return <button title="Double click to delete"
-                     onDoubleClick={() => deleteConfirm(category.slug)}
-                     className="btn btn-outline-primary mr-1 ml-1 mt-3">
+      return <button
+          key={`category-${index}`}
+          title="Double click to delete"
+          onDoubleClick={() => deleteConfirm(category.slug)}
+          className="btn btn-outline-primary mr-1 ml-1 mt-3">
         {category.name}
       </button>
     });
