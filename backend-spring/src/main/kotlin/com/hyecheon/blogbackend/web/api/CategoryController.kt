@@ -1,6 +1,6 @@
 package com.hyecheon.blogbackend.web.api
 
-import com.hyecheon.blogbackend.model.CategoryMapper
+import com.hyecheon.blogbackend.mapper.CategoryMapper
 import com.hyecheon.blogbackend.service.CategoryService
 import com.hyecheon.blogbackend.web.dto.CategoryReqDto
 import org.springframework.security.access.annotation.Secured

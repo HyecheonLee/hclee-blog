@@ -3,6 +3,7 @@ package com.hyecheon.blogbackend.security.jwt
 import com.auth0.jwt.internal.org.apache.commons.codec.CharEncoding
 import com.hyecheon.blogbackend.security.UserAuthenticationToken
 import com.hyecheon.blogbackend.utils.Log
+import com.hyecheon.blogbackend.web.dto.UserProfileDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.GrantedAuthority
@@ -13,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.GenericFilterBean
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
+import java.time.LocalDateTime
 import java.util.regex.Pattern
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -35,9 +37,9 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 
 	private val BEARER: Pattern = Pattern.compile("^Bearer$", Pattern.CASE_INSENSITIVE)
 
-	override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
-		val request = request as HttpServletRequest
-		val response = response as HttpServletResponse
+	override fun doFilter(_request: ServletRequest, _response: ServletResponse, chain: FilterChain) {
+		val request = _request as HttpServletRequest
+		val response = _response as HttpServletResponse
 
 		if (SecurityContextHolder.getContext().authentication == null) {
 			obtainAuthorizationToken(request)?.let { authorizationToken ->
@@ -52,11 +54,23 @@ class JwtAuthenticationTokenFilter : GenericFilterBean() {
 				}
 
 				val authorities = obtainAuthorities(claims)
-				if (claims.containsKey("email") && authorities != null && authorities.isNotEmpty()) {
-					val email = claims["email"] as String
+				if (claims.containsKey("id") && authorities != null && authorities.isNotEmpty()) {
+					val id = claims["id"] as Number
+					val loginCount = claims["loginCount"] as Number
+					val userProfileDto = UserProfileDto(id = id.toLong(),
+							username = claims["username"] as String,
+							name = claims["name"] as String,
+							email = claims["email"] as String,
+							profile = claims["profile"] as String,
+							role = claims["role"] as String,
+							photo = claims["photo"] as String,
+							loginCount = loginCount.toLong(),
+							loginTime = LocalDateTime.parse(claims["loginTime"] as String))
+
+
 					val error = claims["error"] ?: ""
 
-					val jwtAuthentication = JwtAuthentication(email, error as String, addr = request.remoteAddr)
+					val jwtAuthentication = JwtAuthentication(userProfileDto, error as String, addr = request.remoteAddr)
 					if (jwtAuthentication.isError()) {
 						log.error("jwt error [{}]", jwtAuthentication)
 					}

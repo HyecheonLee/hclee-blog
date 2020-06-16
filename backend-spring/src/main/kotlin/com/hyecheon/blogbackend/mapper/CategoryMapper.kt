@@ -1,5 +1,6 @@
-package com.hyecheon.blogbackend.model
+package com.hyecheon.blogbackend.mapper
 
+import com.hyecheon.blogbackend.model.Category
 import com.hyecheon.blogbackend.web.dto.CategoryReqDto
 import org.mapstruct.Mapper
 

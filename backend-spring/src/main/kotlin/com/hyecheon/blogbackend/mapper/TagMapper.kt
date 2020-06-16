@@ -1,5 +1,6 @@
-package com.hyecheon.blogbackend.model
+package com.hyecheon.blogbackend.mapper
 
+import com.hyecheon.blogbackend.model.Tag
 import com.hyecheon.blogbackend.web.dto.TagReqDto
 import org.mapstruct.Mapper
 

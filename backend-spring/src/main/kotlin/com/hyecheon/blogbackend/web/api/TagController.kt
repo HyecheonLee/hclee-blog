@@ -1,6 +1,6 @@
 package com.hyecheon.blogbackend.web.api
 
-import com.hyecheon.blogbackend.model.TagMapper
+import com.hyecheon.blogbackend.mapper.TagMapper
 import com.hyecheon.blogbackend.service.TagService
 import com.hyecheon.blogbackend.web.dto.TagReqDto
 import org.springframework.security.access.annotation.Secured

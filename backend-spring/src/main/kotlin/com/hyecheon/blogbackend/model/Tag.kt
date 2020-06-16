@@ -1,16 +1,39 @@
 package com.hyecheon.blogbackend.model
 
-import org.springframework.data.mongodb.core.index.Indexed
-import org.springframework.data.mongodb.core.mapping.Document
-import org.springframework.data.mongodb.core.mapping.Field
-import org.springframework.data.mongodb.core.mapping.MongoId
-import java.time.LocalDateTime
+import javax.persistence.*
 
-@Document("tags")
+@Entity
 data class Tag(
-		@MongoId
-		var id: String? = null,
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		var id: Long? = null,
 		var name: String = "",
-		@Indexed(unique = true)
-		var slug: String = "")
+		@Column(unique = true)
+		var slug: String = "",
+		@OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
+		var blogTag: MutableList<BlogTag> = mutableListOf()
+) : BaseEntity(){
+	override fun equals(other: Any?): Boolean {
+		if (this === other) return true
+		if (other !is Tag) return false
+
+		if (id != other.id) return false
+		if (name != other.name) return false
+		if (slug != other.slug) return false
+
+		return true
+	}
+
+	override fun hashCode(): Int {
+		var result = id?.hashCode() ?: 0
+		result = 31 * result + name.hashCode()
+		result = 31 * result + slug.hashCode()
+		return result
+	}
+
+	override fun toString(): String {
+		return "Tag(id=$id, name='$name', slug='$slug')"
+	}
+
+}
 

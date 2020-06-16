@@ -1,6 +1,6 @@
 package com.hyecheon.blogbackend.web.api
 
-import com.hyecheon.blogbackend.model.UserMapper
+import com.hyecheon.blogbackend.mapper.UserMapper
 import com.hyecheon.blogbackend.security.UserAuthenticationToken
 import com.hyecheon.blogbackend.service.UserService
 import org.springframework.security.core.context.SecurityContextHolder
@@ -17,8 +17,6 @@ class UserController(
 	fun getProfile() = let {
 		val userAuthenticationToken = SecurityContextHolder.getContext().authentication as UserAuthenticationToken
 		val jwtAuthentication = userAuthenticationToken.principal
-		val email = jwtAuthentication.email
-		val user = userService.findByEmail(email)
-		userMapper.toUserProfileDto(user)
+		jwtAuthentication.user
 	}
 }

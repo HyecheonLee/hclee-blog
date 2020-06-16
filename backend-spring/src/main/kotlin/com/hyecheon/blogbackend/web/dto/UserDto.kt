@@ -1,5 +1,6 @@
 package com.hyecheon.blogbackend.web.dto
 
+import com.hyecheon.blogbackend.model.User
 import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.Min
@@ -23,7 +24,7 @@ data class UserSignInDto(
 
 data class UserReqWithTokenDto(
 		var token: String,
-		var user: UserProfileResDto
+		var user: UserProfileDto
 )
 
 data class UserReqDto(
@@ -39,7 +40,8 @@ data class UserSignUpResDto(
 		val password: String
 )
 
-data class UserProfileResDto(
+data class UserProfileDto(
+		var id: Long? = null,
 		var username: String = "",
 		var name: String = "",
 		var email: String = "",
@@ -47,4 +49,16 @@ data class UserProfileResDto(
 		var role: String = "ROLE_USER",
 		var photo: String = "",
 		var loginCount: Long = 0,
-		var loginTime: LocalDateTime = LocalDateTime.now());
+		var loginTime: LocalDateTime = LocalDateTime.now()) {
+	fun toModel(): User {
+		return User(id = id,
+				username = username,
+				name = name,
+				email = email,
+				profile = profile,
+				role = role,
+				photo = photo,
+				loginCount = loginCount,
+				loginTime = loginTime)
+	}
+}

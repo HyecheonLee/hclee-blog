@@ -1,6 +1,7 @@
-package com.hyecheon.blogbackend.model
+package com.hyecheon.blogbackend.mapper
 
-import com.hyecheon.blogbackend.web.dto.UserProfileResDto
+import com.hyecheon.blogbackend.model.User
+import com.hyecheon.blogbackend.web.dto.UserProfileDto
 import com.hyecheon.blogbackend.web.dto.UserSignInDto
 import com.hyecheon.blogbackend.web.dto.UserSignUpReqDto
 import org.mapstruct.Mapper
@@ -14,5 +15,5 @@ interface UserMapper {
 	@Mapping(source = "password", target = "hashedPassword")
 	fun toModel(userSignInDto: UserSignInDto): User
 
-	fun toUserProfileDto(user: User): UserProfileResDto
+	fun toUserProfileDto(user: User): UserProfileDto
 }

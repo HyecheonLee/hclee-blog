@@ -58,7 +58,7 @@ class SecurityConfig(
 				.and()
 				.authorizeRequests()
 				.antMatchers("/error").permitAll()
-//				.antMatchers("/api/signup").permitAll()
+				.antMatchers("/api/blog/**").permitAll()
 //				.antMatchers("/api/signin").permitAll()
 //				.antMatchers("/api/**").hasAnyRole("ROLE_USER", "ROLE_ADMIN")
 				.anyRequest().permitAll()

@@ -1,7 +1,6 @@
 package com.hyecheon.blogbackend.web.api
 
-import com.hyecheon.blogbackend.model.UserMapper
-import com.hyecheon.blogbackend.security.UserAuthenticationToken
+import com.hyecheon.blogbackend.mapper.UserMapper
 import com.hyecheon.blogbackend.security.jwt.JWT
 import com.hyecheon.blogbackend.service.UserService
 import com.hyecheon.blogbackend.web.dto.UserReqWithTokenDto
