@@ -21,9 +21,7 @@ export const listBlogsWithCategoriesAndTags = () => {
     method: "POST",
     headers: {
       "Accept": "application/json",
-      "Authorization": `Bearer ${token}`
     },
-    body: blog
   })
   .then(response => {
     return response.json()
