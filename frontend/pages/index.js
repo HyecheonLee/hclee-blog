@@ -9,9 +9,6 @@ const Index = () => {
         <Link href="/signup">
           <a>Signup</a>
         </Link>
-        <Link href="/signin">
-          <a>Signin</a>
-        </Link>
       </Layout>
   )
 }

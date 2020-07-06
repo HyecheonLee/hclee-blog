@@ -53,19 +53,13 @@ const Header = () => {
                     </Link>
                   </NavItem>
               )}
-              {!isAuth() &&
               <>
                 <NavItem>
-                  <Link href="/signin">
-                    <NavLink>Signin</NavLink>
+                  <Link href="/blogs">
+                    <NavLink>Blogs</NavLink>
                   </Link>
                 </NavItem>
-                <NavItem>
-                  <Link href="/signup">
-                    <NavLink>Signup</NavLink>
-                  </Link>
-                </NavItem>
-              </>}
+              </>
             </Nav>
           </Collapse>
         </Navbar>
